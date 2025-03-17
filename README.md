@@ -1,5 +1,7 @@
 # ThreatLog-AI-frontend
-Aplicacion para la visualización de los logs mediante graficos en tiempo real y notificacion de alertas en caso de deteccion de anomalias en tiempo real.
+Proyecto de visualización de los logs mediante gráficos:
+Proyecto de frontend utilizando Vue.js y TypeScript que se encargará de mostrar los resultados de los logs mediante gráficos en tiempo real y también notificará a los usuarios mediante alertas en caso de que se detecte una anomalía.
+Esta aplicación se conecta con AWS para consultar los datos mediante peticiones HTTP ya que el servicio AWS Gateway permite crear una API REST.
 
-Aquesta part consisteix en desenvolupar el FrontEnd utilitzant TypeScript com a llenguatge de programació i Vue.js com a framework per crear una interfície web intuïtiva i dinàmica. L’objectiu és permetre al client visualitzar en temps real els logs del seu servidor mitjançant diferents tipus de gràfics i rebre notificacions immediates en cas de detectar-se una anomalia.
-Per a la comunicació amb el Backend, utilitzarem la llibreria Axios per consumir l’API REST, que proporcionarà les dades necessàries per al monitoratge i la detecció d’amenaces.
+¿Es recomendable tener una aplicación externa de AWS para visualizar los resultados?
+Si es recomendable que se haga de esta manera ya que de esta manera se consigue tanto escalabilidad y flexibilidad.
