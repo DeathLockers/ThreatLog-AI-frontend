@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  app.prod:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: 'prod-pwa-stage'
+    image: javi98/threatlog-ai-frontend-prod:1.0.0
+    container_name: threatlog-ai-frontend-prod
+    ports:
+      - '85:80'

@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: 'develop-stage'
+    image: javi98/threatlog-ai-frontend:1.0.0
+    container_name: threatlog-ai-frontend
+    command: /bin/sh -c "yarn && quasar upgrade -i && quasar dev"
+    ports:
+      - '9000:9000'
+    volumes:
+      - '.:/src'
+      - /src/node_modules
