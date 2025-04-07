@@ -3,28 +3,35 @@
   "version": "0.0.1",
   "description": "Anomaly log detection using AI",
   "productName": "ThreatLog AI",
-  "author": "",
+  "author": "DeathLockers",
   "type": "module",
   "private": true,
   "scripts": {
     "test": "echo \"No test specified\" && exit 0",
-    "dev": "quasar dev",
-    "build": "quasar build",
-    "postinstall": "quasar prepare"
+    "postinstall": "quasar prepare",
+    "quasar-dev": "quasar dev",
+    "quasar-build": "quasar build",
+    "dev": "docker compose up",
+    "dev-down": "docker compose down",
+    "build": "docker compose exec app quasar build",
+    "build-pwa": "docker compose exec app quasar build -m pwa",
+    "prod": "docker compose -f docker-compose.prod.yml up --build",
+    "prod-down": "docker compose -f docker-compose.prod.yml down"
   },
   "dependencies": {
-    "axios": "^1.2.1",
-    "vue-i18n": "^11.0.0",
-    "pinia": "^3.0.1",
     "@quasar/extras": "^1.16.4",
+    "axios": "^1.2.1",
+    "dotenv": "^16.4.7",
+    "pinia": "^3.0.1",
     "quasar": "^2.16.0",
     "vue": "^3.4.18",
+    "vue-i18n": "^11.0.0",
     "vue-router": "^4.0.12"
   },
   "devDependencies": {
-    "@types/node": "^20.5.9",
     "@intlify/unplugin-vue-i18n": "^4.0.0",
     "@quasar/app-vite": "^2.1.0",
+    "@types/node": "^20.5.9",
     "autoprefixer": "^10.4.2",
     "typescript": "~5.5.3"
   },
