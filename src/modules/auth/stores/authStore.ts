@@ -1,20 +1,29 @@
-import { ref, readonly } from 'vue';
-import { api } from 'boot/axios';
+import { computed, ref, reactive, readonly } from 'vue';
 import { defineStore } from 'pinia';
 import { LocalStorage } from 'quasar';
-import type { MessageError } from 'src/modules/common/interfaces/commonInterface';
-import type { LoginForm, UserAuth } from '../interfaces/authInterface';
 import { AxiosError } from 'axios';
+import { api } from 'boot/axios';
+import type { MessageError } from 'src/modules/common/interfaces/commonInterface';
+import type { LoginForm, UserAuthBackend, UserAuth } from '../interfaces/authInterface';
 import piniaResetAllStores from 'src/modules/common/helpers/piniaResetAllStores';
 
 export const useAuthStore = defineStore('auth', () => {
   //State
+  const UserAuthBackendInitial: UserAuthBackend = { id: '', name: '', email: '' };
+
   const isLogged = ref<boolean | null>(false);
-  const userAuth = ref<UserAuth | null>(null);
+  let userAuthBackend = reactive<UserAuthBackend>(UserAuthBackendInitial);
   const prefixPathAuth = readonly(ref<string>('auth'));
   //End State
 
   //Getters
+  const userAuth = computed<UserAuth>(() => {
+    return {
+      id: userAuthBackend.id ?? '',
+      email: userAuthBackend.email ?? '',
+      name: userAuthBackend.name ?? '',
+    };
+  });
   //End Getters
 
   //Actions
@@ -49,38 +58,40 @@ export const useAuthStore = defineStore('auth', () => {
     isLogged.value = !!data?.id;
     if (!isLogged.value) {
       LocalStorage.remove('token');
-      userAuth.value = null;
+      userAuthBackend = UserAuthBackendInitial;
     } else {
-      userAuth.value = data;
+      LocalStorage.set('token', data.token);
+      userAuthBackend = data;
+      userAuthBackend.token = null;
     }
   };
 
-  const setLogin = (data: UserAuth): void => {
+  const setLogin = (data: UserAuthBackend): void => {
     isLogged.value = true;
     LocalStorage.set('token', data.token);
-    userAuth.value = data;
-    userAuth.value.token = null;
+    userAuthBackend = data;
+    userAuthBackend.token = null;
   };
 
   const setLogout = (): void => {
     isLogged.value = false;
-    userAuth.value = null;
+    userAuthBackend = UserAuthBackendInitial;
     piniaResetAllStores();
     LocalStorage.remove('token');
   };
 
   const $reset = (): void => {
     isLogged.value = false;
-    userAuth.value = null;
+    userAuthBackend = UserAuthBackendInitial;
   };
   //End Setters
 
   return {
     //State
     isLogged,
-    userAuth,
 
     //Getters
+    userAuth,
 
     //Actions
     check,

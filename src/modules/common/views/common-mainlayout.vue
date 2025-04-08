@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { reactive } from 'vue';
 import HeaderPrincipal from '../components/HeaderPrincipal.vue';
 import ViewPageContainer from '../components/ViewPageContainer.vue';
 
-const excludeViews = ref<string[]>(['']);
+const excludeViews = reactive<string[]>(['']);
 </script>
 
 <template>
-  <q-layout view="lHh lpr lFf" class="my-class-layout">
+  <q-layout view="hHh lpR fFf">
     <HeaderPrincipal />
     <router-view v-slot="{ Component, route }">
       <KeepAlive :exclude="excludeViews">
@@ -22,7 +22,4 @@ const excludeViews = ref<string[]>(['']);
 </template>
 
 <style lang="sass" scoped>
-.my-class-layout
-  :deep(div.q-drawer-container aside)
-    position: fixed
 </style>

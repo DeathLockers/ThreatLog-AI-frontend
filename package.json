@@ -13,20 +13,22 @@
     "quasar-build": "quasar build",
     "dev": "docker compose up",
     "dev-down": "docker compose down",
-    "build": "docker compose exec app quasar build",
-    "build-pwa": "docker compose exec app quasar build -m pwa",
+    "build": "docker compose exec frontend quasar build",
+    "build-pwa": "docker compose exec frontend quasar build -m pwa",
     "prod": "docker compose -f docker-compose.prod.yml up --build",
     "prod-down": "docker compose -f docker-compose.prod.yml down"
   },
   "dependencies": {
     "@quasar/extras": "^1.16.4",
+    "apexcharts": "^4.5.0",
     "axios": "^1.2.1",
     "dotenv": "^16.4.7",
     "pinia": "^3.0.1",
     "quasar": "^2.16.0",
     "vue": "^3.4.18",
     "vue-i18n": "^11.0.0",
-    "vue-router": "^4.0.12"
+    "vue-router": "^4.0.12",
+    "vue3-apexcharts": "^1.8.0"
   },
   "devDependencies": {
     "@intlify/unplugin-vue-i18n": "^4.0.0",

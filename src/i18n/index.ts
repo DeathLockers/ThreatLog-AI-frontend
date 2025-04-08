@@ -4,6 +4,6 @@ import caES from './ca-ES';
 
 export default {
   'en-US': enUS,
-  'es': esES,
-  'ca': caES,
+  // 'es': esES,
+  // 'ca': caES,
 };

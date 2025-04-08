@@ -23,4 +23,11 @@ export default {
   'Welcome to your anomaly detection dashboard': 'Welcome to your anomaly detection dashboard',
   'Internal server error, please contact your administrator.':
     'Internal server error, please contact your administrator.',
+  'View log list': 'View log list',
+  'Performance metrics': 'Performance metrics',
+  'Real-time anomaly detection': 'Real-time anomaly detection',
+  'Anomaly detection from the last week': 'Anomaly detection from the last week',
+  'Anomalies detected': 'Anomalies detected',
+  'Logs detected as anomaly': 'Logs detected as anomaly',
+  'Logs':'Logs'
 };

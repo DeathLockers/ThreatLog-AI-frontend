@@ -1,5 +1,6 @@
 import { RouteRecordRaw } from 'vue-router';
 import authRouter from '../modules/auth/router/authRouter';
+import logRouter from '../modules/log/router/logRouter';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -9,6 +10,8 @@ const routes: RouteRecordRaw[] = [
     children: [
       //Auth
       ...authRouter,
+      //Log
+      ...logRouter,
     ],
   },
 
