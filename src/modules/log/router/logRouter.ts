@@ -6,7 +6,7 @@ const routes: RouteRecordRaw[] = [
     path: '/logs',
     name: 'log-list',
     beforeEnter: [isAuthenticatedGuard],
-    component: () => import(/* webpackChunkName: "log-list" */ 'src/modules/log/views/log-list.vue'),
+    component: () => import('src/modules/log/views/log-list.vue'),
   },
 ];
 

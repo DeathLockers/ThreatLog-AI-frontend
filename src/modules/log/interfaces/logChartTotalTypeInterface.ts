@@ -16,25 +16,25 @@ export interface ChartTotalTypeOptions {
   legend: Legend;
 }
 
-export interface ChartOptionsChart {
+interface ChartOptionsChart {
   width: number;
   type: string;
 }
 
-export interface Legend {
+interface Legend {
   position: string;
   horizontalAlign: string;
 }
 
-export interface Responsive {
+interface Responsive {
   breakpoint: number;
   options: Options;
 }
 
-export interface Options {
+interface Options {
   chart: OptionsChart;
 }
 
-export interface OptionsChart {
+interface OptionsChart {
   width: number;
 }

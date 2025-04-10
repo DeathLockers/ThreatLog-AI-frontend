@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import { toRef } from 'vue';
-
 interface Props {
   label: string;
 }
-const props = defineProps<Props>();
 
-const label = toRef(props, 'label');
+const { label } = defineProps<Props>();
 </script>
 
 <template>

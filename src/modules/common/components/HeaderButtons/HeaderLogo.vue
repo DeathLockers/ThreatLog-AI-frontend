@@ -7,8 +7,9 @@ const { redirectHome } = useRedirect()
 </script>
 
 <template>
-  <q-toolbar-title class="cursor-pointer" @click="redirectHome(), authStore.check()">
-    <q-img no-spinner src="/images/logo.png" style="width: 185px" />
+  <q-toolbar-title>
+    <q-img class="cursor-pointer" @click="redirectHome(), authStore.check()" no-spinner src="/images/logo.png"
+      style="width: 185px" />
   </q-toolbar-title>
 </template>
 

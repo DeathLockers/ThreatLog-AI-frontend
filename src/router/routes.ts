@@ -6,7 +6,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'mainlayout',
-    component: () => import(/* webpackChunkName: "mainlayout */ '../modules/common/views/common-mainlayout.vue'),
+    component: () => import('../modules/common/views/common-mainlayout.vue'),
     children: [
       //Auth
       ...authRouter,
@@ -18,13 +18,14 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/login',
     name: 'login',
-    component: () => import(/* webpackChunkName: "login" */ '../modules/auth/views/auth-login.vue'),
+    component: () => import('../modules/auth/views/auth-login.vue'),
   },
 
   // Always leave this as last one,
   // but you can also remove it
   {
     path: '/:catchAll(.*)*',
+    name: 'not-found',
     //component: () => import('../modules/common/views/common-error404.vue'),
     redirect() {
       return { name: 'home', params: {} };

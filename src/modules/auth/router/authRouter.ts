@@ -6,7 +6,7 @@ const routes: RouteRecordRaw[] = [
     path: '',
     name: 'home',
     beforeEnter: [isAuthenticatedGuard],
-    component: () => import(/* webpackChunkName: "home" */ 'src/modules/common/views/common-home.vue'),
+    component: () => import('src/modules/common/views/common-home.vue'),
   },
 ];
 

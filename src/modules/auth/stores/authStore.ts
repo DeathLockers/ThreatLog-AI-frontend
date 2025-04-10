@@ -9,10 +9,10 @@ import piniaResetAllStores from 'src/modules/common/helpers/piniaResetAllStores'
 
 export const useAuthStore = defineStore('auth', () => {
   //State
-  const UserAuthBackendInitial: UserAuthBackend = { id: '', name: '', email: '' };
+  const userAuthBackendInitial: UserAuthBackend = { id: '', name: '', email: '' };
 
   const isLogged = ref<boolean | null>(false);
-  let userAuthBackend = reactive<UserAuthBackend>(UserAuthBackendInitial);
+  let userAuthBackend = reactive<UserAuthBackend>(userAuthBackendInitial);
   const prefixPathAuth = readonly(ref<string>('auth'));
   //End State
 
@@ -58,7 +58,7 @@ export const useAuthStore = defineStore('auth', () => {
     isLogged.value = !!data?.id;
     if (!isLogged.value) {
       LocalStorage.remove('token');
-      userAuthBackend = UserAuthBackendInitial;
+      userAuthBackend = userAuthBackendInitial;
     } else {
       LocalStorage.set('token', data.token);
       userAuthBackend = data;
@@ -75,14 +75,14 @@ export const useAuthStore = defineStore('auth', () => {
 
   const setLogout = (): void => {
     isLogged.value = false;
-    userAuthBackend = UserAuthBackendInitial;
+    userAuthBackend = userAuthBackendInitial;
     piniaResetAllStores();
     LocalStorage.remove('token');
   };
 
   const $reset = (): void => {
     isLogged.value = false;
-    userAuthBackend = UserAuthBackendInitial;
+    userAuthBackend = userAuthBackendInitial;
   };
   //End Setters
 

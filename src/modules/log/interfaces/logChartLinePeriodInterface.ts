@@ -8,6 +8,11 @@ export interface ChartLinePeriod {
   total: number[];
 }
 
+export interface ChartLinePeriodSeries {
+  name: string;
+  data: number[];
+}
+
 export interface ChartLinePeriodOptions {
   chart: Chart;
   dataLabels: DataLabels;
@@ -16,34 +21,29 @@ export interface ChartLinePeriodOptions {
   xaxis: Xaxis;
 }
 
-export interface Chart {
+interface Chart {
   height: number;
   type: string;
   zoom: DataLabels;
 }
 
-export interface DataLabels {
+interface DataLabels {
   enabled: boolean;
 }
 
-export interface Grid {
+interface Grid {
   row: Row;
 }
 
-export interface Row {
+interface Row {
   colors: string[];
   opacity: number;
 }
 
-export interface Stroke {
+interface Stroke {
   curve: string;
 }
 
-export interface Xaxis {
+interface Xaxis {
   categories: string[];
-}
-
-export interface ChartLinePeriodSeries {
-  name: string;
-  data: number[];
 }

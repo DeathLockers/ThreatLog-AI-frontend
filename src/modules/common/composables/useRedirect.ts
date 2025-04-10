@@ -1,7 +1,10 @@
-import { Router, useRouter } from 'vue-router';
+import { route } from 'quasar/wrappers';
+import { computed } from 'vue';
+import { Router, useRoute, useRouter } from 'vue-router';
 
 const useRedirect = () => {
   const router: Router = useRouter();
+  const route = useRoute()
 
   //Redirects
   const redirectHome = (): void => {
@@ -23,6 +26,7 @@ const useRedirect = () => {
     redirectLogin,
 
     //Variables
+    routeName: computed<string>(() => route.name as string)
   };
 };
 

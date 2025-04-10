@@ -1,23 +1,24 @@
 <script setup lang="ts">
-import { reactive } from 'vue';
+import { ref } from 'vue';
 import HeaderPrincipal from '../components/HeaderPrincipal.vue';
 import ViewPageContainer from '../components/ViewPageContainer.vue';
 
-const excludeViews = reactive<string[]>(['']);
+const excludeViews = ref<string[]>(['common-home']);
+
 </script>
 
 <template>
   <q-layout view="hHh lpR fFf">
     <HeaderPrincipal />
-    <router-view v-slot="{ Component, route }">
-      <KeepAlive :exclude="excludeViews">
-        <ViewPageContainer>
-          <template #content>
+    <ViewPageContainer>
+      <template #content>
+        <router-view v-slot="{ Component, route }">
+          <KeepAlive :exclude="excludeViews">
             <component :is="Component" :key="route.name" />
-          </template>
-        </ViewPageContainer>
-      </KeepAlive>
-    </router-view>
+          </KeepAlive>
+        </router-view>
+      </template>
+    </ViewPageContainer>
   </q-layout>
 </template>
 

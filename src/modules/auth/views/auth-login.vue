@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive, provide } from 'vue';
+import { ref, provide, reactive } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '../stores/authStore';
 import type { LoginForm } from '../interfaces/authInterface';
