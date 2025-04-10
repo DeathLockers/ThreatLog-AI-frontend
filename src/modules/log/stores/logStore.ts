@@ -1,4 +1,4 @@
-import { computed, ref, reactive, readonly } from 'vue';
+import { computed, ref, reactive } from 'vue';
 import { defineStore } from 'pinia';
 import { api } from 'boot/axios';
 import type {
@@ -7,8 +7,10 @@ import type {
   ListLogs,
   ListLogsBackend,
 } from '../interfaces/logInterface';
+import type { VerifiedLog } from '../interfaces/logVerifiedInterface';
 import { OrderBy, OrderColumns } from '../enums/logEnum';
 import getRangeDates from 'src/modules/common/helpers/rangeDates';
+import { PrefixPath } from 'src/modules/common/enums/prefixPathEnum';
 
 export const useLogStore = defineStore('log', () => {
   //State
@@ -27,7 +29,7 @@ export const useLogStore = defineStore('log', () => {
   let listLogsParameterizedBackend = reactive<ListLogsParameterizedBackend>(listLogsParameterizedBackendInitial);
   let listLogsBackend = reactive<ListLogsBackend[]>(listLogsBackendInitial);
   const isLastPage = ref<boolean>(false);
-  const prefixPathLogs = readonly(ref<string>('logs'));
+  const prefixPathLogs = ref<string>(PrefixPath.LOG);
   //End State
 
   //Getters
@@ -65,7 +67,7 @@ export const useLogStore = defineStore('log', () => {
     listLogsParameterizedBackend.page = data.page;
     listLogsParameterizedBackend.items = data.items;
     listLogsParameterizedBackend.filter = data.filter;
-    listLogsParameterizedBackend.target = data.target ?? null;
+    listLogsParameterizedBackend.target = data.target ?? false;
     listLogsParameterizedBackend.range_date = data.rangeDate;
     listLogsParameterizedBackend.order = data.order;
     listLogsParameterizedBackend.order_by = data.orderBy;
@@ -77,6 +79,23 @@ export const useLogStore = defineStore('log', () => {
     if (listLogsParameterizedBackend.page === 1) listLogsBackend.length = 0;
 
     listLogsBackend.push(...data);
+  };
+
+  const setUpdateVerifiedListLog = (data: VerifiedLog) => {
+    const logIndex = listLogsBackend.findIndex((l) => l.id === data.logId);
+
+    if (logIndex !== -1 && listLogsBackend[logIndex]) {
+      const log = listLogsBackend[logIndex];
+
+      if (data.target !== null) {
+        log.verified_log == undefined
+          ? (log.verified_log = { target: data.target })
+          : (log.verified_log.target = data.target);
+      } else {
+        delete log.verified_log?.target;
+        log.verified_log = data.target;
+      }
+    }
   };
 
   const $reset = (): void => {
@@ -96,6 +115,7 @@ export const useLogStore = defineStore('log', () => {
     showLogs,
 
     //Setters
+    setUpdateVerifiedListLog,
     $reset,
   };
 });

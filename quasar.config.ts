@@ -61,7 +61,9 @@ export default defineConfig((ctx) => {
       // polyfillModulePreload: true,
       // distDir
 
-      // extendViteConf (viteConf) {},
+      extendViteConf(viteConf) {
+        if (viteConf.build) viteConf.build.chunkSizeWarningLimit = 650;
+      },
       // viteVuePluginOptions: {},
 
       vitePlugins: [

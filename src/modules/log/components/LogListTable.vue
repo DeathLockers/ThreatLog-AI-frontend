@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { inject, onMounted, ref, toRefs, useTemplateRef } from 'vue';
+import { inject, ref, toRefs, useTemplateRef } from 'vue';
 import { QTable } from 'quasar';
 import type { ListLogs, ListLogsParameterized } from '../interfaces/logInterface';
+import type { VerifiedLog } from '../interfaces/logVerifiedInterface';
 import { OrderBy, OrderColumns, TableColumnsName, TableRowKey } from '../enums/logEnum';
 import { ListLogsParameterizedType } from '../types/logType';
-import useLog from '../composables/useLog';
 import { listLogsColumns, logsVisibleColumns } from '../helpers/tableColumns';
+import LogListTableFilter from './LogListTable/LogListTableFilter.vue';
+import LogListTableFilterDates from './LogListTable/LogListTableFilterDates.vue';
+import LogListTableFilterOnlyAnomalies from './LogListTable/LogListTableFilterOnlyAnomalies.vue';
 
 interface Props {
   rows: ListLogs[];
@@ -34,8 +37,11 @@ interface TableRangeDates {
   to: string;
 }
 
+defineEmits<{
+  onVerifiedLog: [VerifiedLog];
+}>();
+
 const { rows, isLoading } = defineProps<Props>();
-const { anomalyColor } = useLog()
 const pagination = ref<Pagination>({
   page: 1,
   rowsPerPage: rows.length,
@@ -44,24 +50,21 @@ const pagination = ref<Pagination>({
   rowsNumber: rows.length
 });
 
-const tableFilter = ref<string>('')
-
-const tableRangeDates = ref<TableRangeDates>({ from: '', to: '' })
-
-const { filter, page, order, orderBy, rangeDate } = toRefs(inject(ListLogsParameterizedType) as ListLogsParameterized);
+const { filter, page, target, order, orderBy, rangeDate } = toRefs(inject(ListLogsParameterizedType) as ListLogsParameterized);
 
 const tableLogsRef = useTemplateRef<QTable>('table-logs')
 
-onMounted(() => {
-  tableRangeDates.value.to = rangeDate.value[0]
-  tableRangeDates.value.from = rangeDate.value[1]
-})
-
-const rowStyleAnomalyDetectFn = (row: ListLogs): string => {
+const rowClassAnomalyDetectFn = (row: ListLogs): string => {
   if (row.predictedLog)
-    return `background-color: ${anomalyColor}`
+    return 'bg-anomaly'
 
   return ''
+}
+
+const resetPage = () => {
+  pagination.value.page = 1
+  page.value = pagination.value.page
+  tableLogsRef.value?.scrollTo(0)
 }
 
 const onRequest = (props: RequestProps) => {
@@ -70,45 +73,41 @@ const onRequest = (props: RequestProps) => {
 
   pagination.value.sortBy = sortBy
   pagination.value.descending = descending
-  pagination.value.page = 1
 
   order.value = sortBy as OrderColumns ?? OrderColumns.DATETIME
   orderBy.value = descending ? OrderBy.DESC : OrderBy.ASC
-  page.value = pagination.value.page
 
-  tableLogsRef.value?.scrollTo(0)
+  resetPage()
 }
 
 const onVirtualScroll = (props: VirtualScrollProps) => {
   if (rows.length) {
     const { to } = props;
 
-    if (rows.length - to <= 10) {
+    if ((rows.length - to) <= 1) {
       pagination.value.page++
       page.value = pagination.value.page
     }
   }
 }
 
-const onUpdateFilter = (val: string | number | null) => {
+const onUpdateFilter = (val: string) => {
   filter.value = val as string
-  pagination.value.page = 1
-  page.value = pagination.value.page
-
-  tableLogsRef.value?.scrollTo(0)
+  resetPage()
 }
 
-const onUpdateDates = () => {
-  !tableRangeDates.value.from
-    ? rangeDate.value = [tableRangeDates.value as any, tableRangeDates.value as any]
-    : rangeDate.value = [tableRangeDates.value.from, tableRangeDates.value.to]
+const onUpdateDates = (val: TableRangeDates) => {
+  !val.from
+    ? rangeDate.value = [val as any, val as any]
+    : rangeDate.value = [val.from, val.to]
 
-  pagination.value.page = 1
-  page.value = pagination.value.page
-
-  tableLogsRef.value?.scrollTo(0)
+  resetPage()
 }
 
+const onUpdateIsShowAnomalies = (val: boolean) => {
+  target.value = val
+  resetPage()
+}
 </script>
 
 <template>
@@ -116,15 +115,17 @@ const onUpdateDates = () => {
     <q-table class="table-logs-sticky-dynamic" :rows="rows" :columns="listLogsColumns"
       :visible-columns="logsVisibleColumns" flat bordered :row-key="TableRowKey.ID" binary-state-sort
       :loading="isLoading" v-model:pagination="pagination" hide-bottom virtual-scroll
-      :table-row-style-fn="rowStyleAnomalyDetectFn" :virtual-scroll-item-size="48"
+      :table-row-class-fn="rowClassAnomalyDetectFn" :virtual-scroll-item-size="48"
       :virtual-scroll-sticky-size-start="48" @request="onRequest" @virtual-scroll="onVirtualScroll" ref="table-logs">
 
       <template v-slot:[`body-cell-${TableColumnsName.VERIFIED_LOG}`]="props">
         <q-td :props="props">
-          <div class="text-blue">
-          <!-- TODO verified switch -->
-            {{ props.value }}
-          </div>
+          <q-toggle toggle-indeterminate v-model="props.row[TableColumnsName.VERIFIED_LOG]" color="indigo"
+            checked-icon="mdi-check-decagram" unchecked-icon="mdi-window-close" @update:model-value="$emit('onVerifiedLog', {
+              logId: props.row[TableColumnsName.ID],
+              target: props.row[TableColumnsName.VERIFIED_LOG]
+            })" />
+
         </q-td>
       </template>
 
@@ -133,26 +134,18 @@ const onUpdateDates = () => {
 
         <q-space />
 
-        <div class="table-mg-bottom-mobile">
-          <q-btn icon-right="mdi-calendar-month" outline square unelevated padding="sm" color="indigo" class="q-mr-md"
-            :label="`${rangeDate[0]} - ${rangeDate[1]}`">
-            <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-              <q-date v-model="tableRangeDates" color="indigo" range mask="YYYY-MM-DD">
-                <div class="row items-center justify-end q-gutter-sm">
-                  <q-btn :label="$t('Cancel')" color="primary" flat v-close-popup />
-                  <q-btn :label="$t('Confirm')" color="primary" flat @click="onUpdateDates" v-close-popup />
-                </div>
-              </q-date>
-            </q-popup-proxy>
-          </q-btn>
+        <div class="table-mg-bottom-mobile q-mr-md">
+          <LogListTableFilterOnlyAnomalies :target="target" @update-is-only-anomalies="onUpdateIsShowAnomalies" />
         </div>
 
-        <q-input dense debounce="500" color="indigo" :label="$t('Filter')" style="width: 210px" v-model="tableFilter"
-          @update:model-value="onUpdateFilter">
-          <template #append>
-            <q-icon name="mdi-magnify" />
-          </template>
-        </q-input>
+        <div class="table-mg-bottom-mobile q-mr-md">
+          <LogListTableFilterDates :fromDateDefault="rangeDate[1]" :toDateDefault="rangeDate[0]"
+            @update-dates="onUpdateDates" />
+        </div>
+
+        <div class="table-mg-bottom-mobile">
+          <LogListTableFilter @update-filter="onUpdateFilter" />
+        </div>
 
       </template>
 
@@ -188,8 +181,9 @@ const onUpdateDates = () => {
     /* height of all previous header rows */
     scroll-margin-top: 48px
 
-@media (max-width: 620px)
+@media (max-width: 792px)
   .table-mg-bottom-mobile
+    width: 100%
     margin-bottom: 15px
 
 @media (max-width: 520px)

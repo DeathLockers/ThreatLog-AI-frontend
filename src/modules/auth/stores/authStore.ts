@@ -1,4 +1,4 @@
-import { computed, ref, reactive, readonly } from 'vue';
+import { computed, ref, reactive } from 'vue';
 import { defineStore } from 'pinia';
 import { LocalStorage } from 'quasar';
 import { AxiosError } from 'axios';
@@ -6,6 +6,7 @@ import { api } from 'boot/axios';
 import type { MessageError } from 'src/modules/common/interfaces/commonInterface';
 import type { LoginForm, UserAuthBackend, UserAuth } from '../interfaces/authInterface';
 import piniaResetAllStores from 'src/modules/common/helpers/piniaResetAllStores';
+import { PrefixPath } from 'src/modules/common/enums/prefixPathEnum';
 
 export const useAuthStore = defineStore('auth', () => {
   //State
@@ -13,7 +14,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   const isLogged = ref<boolean | null>(false);
   let userAuthBackend = reactive<UserAuthBackend>(userAuthBackendInitial);
-  const prefixPathAuth = readonly(ref<string>('auth'));
+  const prefixPathAuth = ref<string>(PrefixPath.AUTH);
   //End State
 
   //Getters

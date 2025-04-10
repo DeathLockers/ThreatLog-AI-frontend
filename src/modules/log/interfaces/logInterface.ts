@@ -4,7 +4,7 @@ export interface ListLogsParameterizedBackend {
   page: number;
   items: number;
   filter: string;
-  target?: boolean | null;
+  target?: boolean;
   range_date: [string, string];
   order: OrderColumns;
   order_by: OrderBy;
@@ -14,7 +14,7 @@ export interface ListLogsParameterized {
   page: number;
   items: number;
   filter: string;
-  target?: boolean | null;
+  target: boolean;
   rangeDate: [string, string];
   order: OrderColumns;
   orderBy: OrderBy;

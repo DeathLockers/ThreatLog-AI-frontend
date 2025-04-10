@@ -1,4 +1,4 @@
-import { computed, ref, reactive, readonly } from 'vue';
+import { computed, ref, reactive } from 'vue';
 import { defineStore } from 'pinia';
 import { api } from 'boot/axios';
 import type {
@@ -9,6 +9,7 @@ import type {
   ChartCountTypePeriodBackend,
   ChartCountTypePeriod,
 } from '../interfaces/logChartInterface';
+import { PrefixPath } from 'src/modules/common/enums/prefixPathEnum';
 
 export const useLogChartStore = defineStore('logChart', () => {
   //State
@@ -23,7 +24,7 @@ export const useLogChartStore = defineStore('logChart', () => {
   let chartTotalTypesBackend = reactive<ChartTotalTypeBackend>(chartTotalTypesBackendInitial);
   let chartCountTypesPeriodsBackend = reactive<ChartCountTypePeriodBackend>(chartCountTypesPeriodsBackendInitial);
 
-  const prefixPathLogChart = readonly(ref<string>('logs/charts'));
+  const prefixPathLogChart = ref<string>(PrefixPath.LOG_CHART);
   //End State
 
   //Getters
