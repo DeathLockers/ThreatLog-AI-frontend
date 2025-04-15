@@ -14,7 +14,7 @@ onBeforeMount(async () => {
   <div class="q-px-md">
     <div class="text-h3 q-mb-xl div-title">{{ $t('Performance metrics') }}</div>
     <ChartLinePeriods />
-    <div class="text-h5 div-chart-title q-mb-lg">{{ $t('Anomaly detection from the last week') }}</div>
+    <div class="text-h5 div-chart-title q-mb-md">{{ $t('Anomaly detection from the last week') }}</div>
     <div class="row">
       <div class="col-6 div-mobile-col-12">
         <ChartCountTypesPeriods />

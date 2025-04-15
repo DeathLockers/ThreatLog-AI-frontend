@@ -131,7 +131,7 @@ const onUpdateIsShowAnomalies = (val: boolean) => {
 
       <template #top="props">
         <div class="row col-12 q-pt-md">
-          <div class="q-table__title table-mg-bottom-mobile">{{ $t('List of logs') }}</div>
+          <div class="q-table__title text-h5 table-mg-bottom-mobile">{{ $t('List of logs') }}</div>
 
           <q-space />
 
