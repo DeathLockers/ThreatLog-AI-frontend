@@ -27,13 +27,15 @@ onBeforeMount(async () => {
 </template>
 
 <style lang="sass" scoped>
+@media (max-width: 992px)
+  .div-mobile-col-12
+    width: 100%
+
 @media (max-width: 520px)
   .div-title
     font-size: 30px
     margin-bottom: 14px
   .div-chart-title
     font-size: 17px
-    margin-bottom: 0px
-  .div-mobile-col-12
-    width: 100%
+    margin-bottom: 16px
 </style>

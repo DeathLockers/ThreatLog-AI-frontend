@@ -46,4 +46,5 @@ export default {
   Cancel: 'Cancel',
   Confirm: 'Confirm',
   'Only anomalies': 'Only anomalies',
+  'No results found': 'No results found',
 };

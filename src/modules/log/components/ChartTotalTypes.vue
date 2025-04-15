@@ -46,9 +46,18 @@ const chartOptions = computed<ChartTotalTypeOptions>(() => {
 </script>
 
 <template>
-  <div>
-    <apexchart type="pie" width="395" :options="chartOptions" :series="series"></apexchart>
+  <div class="q-mt-lg q-pt-xs">
+    <q-card>
+      <q-card-section class="card-section-chart-mobile">
+        <apexchart type="pie" width="395" :options="chartOptions" :series="series"></apexchart>
+      </q-card-section>
+    </q-card>
   </div>
 </template>
 
-<style lang="sass" scoped></style>
+<style lang="sass" scoped>
+@media (max-width: 520px)
+  .card-section-chart-mobile
+    padding-left: 0px
+    padding-right: 0px
+</style>
