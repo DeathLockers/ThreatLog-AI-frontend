@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { ref, watch } from 'vue'
 
 interface Props {
   target: boolean
@@ -13,15 +13,18 @@ const { target } = defineProps<Props>();
 
 const tableFilterIsAnomalies = ref<boolean>(false)
 
-onMounted(() => {
-  tableFilterIsAnomalies.value = target
-})
+watch(
+  () => target,
+  async (val) => {
+    tableFilterIsAnomalies.value = val
+  },
+);
 </script>
 
 <template>
   <q-checkbox left-label v-model="tableFilterIsAnomalies"
     @update:model-value="$emit('updateIsOnlyAnomalies', tableFilterIsAnomalies)" :label="$t('Anomalies detected')"
-    color="anomaly"  />
+    color="anomaly" />
 </template>
 
 <style lang="sass" scoped></style>

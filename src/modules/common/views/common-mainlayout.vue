@@ -2,9 +2,11 @@
 import { ref } from 'vue';
 import HeaderPrincipal from '../components/HeaderPrincipal.vue';
 import ViewPageContainer from '../components/ViewPageContainer.vue';
+import useWebsocket from '../composables/useWebsocket';
 
 const excludeViews = ref<string[]>(['common-home']);
 
+useWebsocket()
 </script>
 
 <template>
