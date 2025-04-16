@@ -1,22 +1,11 @@
 <script setup lang="ts">
-import { inject, ref, toRefs, watch } from 'vue';
-import { ListLogsParameterizedType } from '../../types/logType';
-import { ListLogsParameterized } from '../../interfaces/logInterface';
+import { ref } from 'vue';
 
 const tableFilter = ref<string>('')
-
-const { filter } = toRefs(inject(ListLogsParameterizedType) as ListLogsParameterized);
 
 defineEmits<{
   updateFilter: [string];
 }>();
-
-watch(
-  () => filter.value,
-  async (val) => {
-    tableFilter.value = val
-  },
-);
 </script>
 
 <template>

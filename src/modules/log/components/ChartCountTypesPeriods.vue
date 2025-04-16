@@ -86,13 +86,9 @@ const chartOptions = computed<ChartCountTypePeriodOptions>(() => {
 </script>
 
 <template>
-  <q-card>
-    <q-card-section>
-      <div class="q-mb-lg">
-        <apexchart type="bar" height="350" :options="chartOptions" :series="series"></apexchart>
-      </div>
-    </q-card-section>
-  </q-card>
+  <div class="q-mb-lg">
+    <apexchart type="bar" height="350" :options="chartOptions" :series="series"></apexchart>
+  </div>
 
 </template>
 

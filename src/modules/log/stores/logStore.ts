@@ -24,8 +24,10 @@ export const useLogStore = defineStore('log', () => {
     order_by: OrderBy.DESC,
   };
 
+  const listLogsBackendInitial: ListLogsBackend[] = [];
+
   let listLogsParameterizedBackend = reactive<ListLogsParameterizedBackend>(listLogsParameterizedBackendInitial);
-  let listLogsBackend = reactive<ListLogsBackend[]>([]);
+  let listLogsBackend = reactive<ListLogsBackend[]>(listLogsBackendInitial);
   const isLastPage = ref<boolean>(false);
   const prefixPathLogs = ref<string>(PrefixPath.LOG);
   //End State
