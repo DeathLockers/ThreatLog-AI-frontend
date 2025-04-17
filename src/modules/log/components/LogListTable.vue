@@ -113,8 +113,8 @@ const onUpdateIsShowAnomalies = (val: boolean) => {
 <template>
   <div class="q-pa-md">
     <q-table class="table-logs-sticky-dynamic" :rows="rows" :columns="listLogsColumns"
-      :visible-columns="logsVisibleColumns" flat bordered :row-key="TableRowKey.ID" binary-state-sort
-      :loading="isLoading" v-model:pagination="pagination" hide-bottom virtual-scroll
+      :visible-columns="logsVisibleColumns" bordered :row-key="TableRowKey.ID" binary-state-sort :loading="isLoading"
+      v-model:pagination="pagination" :hide-bottom="!!rows.length ? true : false" virtual-scroll
       :table-row-class-fn="rowClassAnomalyDetectFn" :virtual-scroll-item-size="48"
       :virtual-scroll-sticky-size-start="48" @request="onRequest" @virtual-scroll="onVirtualScroll" ref="table-logs">
 
@@ -130,27 +130,35 @@ const onUpdateIsShowAnomalies = (val: boolean) => {
       </template>
 
       <template #top="props">
-        <div class="q-table__title table-mg-bottom-mobile">{{ $t('List of logs') }}</div>
+        <div class="row col-12 q-pt-md">
+          <div class="q-table__title text-h5 table-mg-bottom-mobile">{{ $t('List of logs') }}</div>
 
-        <q-space />
+          <q-space />
 
-        <div class="table-mg-bottom-mobile q-mr-md">
-          <LogListTableFilterOnlyAnomalies :target="target" @update-is-only-anomalies="onUpdateIsShowAnomalies" />
+          <div class="table-mg-bottom-mobile q-mr-md">
+            <LogListTableFilterOnlyAnomalies :target="target" @update-is-only-anomalies="onUpdateIsShowAnomalies" />
+          </div>
+
+          <div class="table-mg-bottom-mobile q-mr-md">
+            <LogListTableFilterDates :fromDateDefault="rangeDate[1]" :toDateDefault="rangeDate[0]"
+              @update-dates="onUpdateDates" />
+          </div>
+
+          <div class="table-mg-bottom-mobile">
+            <LogListTableFilter @update-filter="onUpdateFilter" />
+          </div>
         </div>
-
-        <div class="table-mg-bottom-mobile q-mr-md">
-          <LogListTableFilterDates :fromDateDefault="rangeDate[1]" :toDateDefault="rangeDate[0]"
-            @update-dates="onUpdateDates" />
-        </div>
-
-        <div class="table-mg-bottom-mobile">
-          <LogListTableFilter @update-filter="onUpdateFilter" />
-        </div>
-
       </template>
 
       <template #loading>
         <q-inner-loading showing color="indigo" />
+      </template>
+
+      <template #no-data>
+        <div class="full-width row flex-center text-indigo q-gutter-sm">
+          <q-icon size="sm" name="mdi-alert" />
+          <div class="text-subtitle1">{{ $t('No results found') }}</div>
+        </div>
       </template>
     </q-table>
   </div>

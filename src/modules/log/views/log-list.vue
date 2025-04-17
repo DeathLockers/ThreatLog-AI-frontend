@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeMount, provide, reactive, ref, watch } from 'vue';
+import { onActivated, provide, reactive, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useLogStore } from '../stores/logStore';
 import { useLogVerifiedStore } from '../stores/logVerifiedStore'
@@ -15,6 +15,12 @@ const { listLogs, isLastPage } = storeToRefs(logStore);
 
 const logVerifiedStore = useLogVerifiedStore()
 
+interface Props {
+  datetime?: string;
+}
+
+const { datetime } = defineProps<Props>()
+
 const formData = reactive<ListLogsParameterized>({
   page: 1,
   items: 50,
@@ -29,10 +35,10 @@ const isLoading = ref<boolean>(true)
 
 provide(ListLogsParameterizedType, formData);
 
-onBeforeMount(async () => {
+onActivated(async () => {
   await logStore.showLogs(formData)
   isLoading.value = false
-});
+})
 
 const onUpdateVerifiedLog = async (val: VerifiedLog): Promise<void> => {
   await logVerifiedStore.verifiedLog(val)
@@ -49,6 +55,18 @@ watch(
     }
   },
   { deep: true }
+);
+
+watch(
+  () => datetime,
+  async (val) => {
+    if (val) {
+      formData.page = 1
+      formData.rangeDate = [val.split(' ')[0] ?? '', val.split(' ')[0] ?? '']
+      formData.target = true
+      formData.filter = val.split(' ')[1] ?? ''
+    }
+  },
 );
 </script>
 

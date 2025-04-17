@@ -46,4 +46,8 @@ export default {
   Cancel: 'Cancel',
   Confirm: 'Confirm',
   'Only anomalies': 'Only anomalies',
+  'No results found': 'No results found',
+  Notifications: 'Notifications',
+  'New anomaly detected': 'New anomaly detected',
+  'Mark all messages as read': 'Mark all messages as read',
 };

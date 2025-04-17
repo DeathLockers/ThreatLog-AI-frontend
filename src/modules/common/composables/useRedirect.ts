@@ -4,7 +4,7 @@ import { Router, useRoute, useRouter } from 'vue-router';
 
 const useRedirect = () => {
   const router: Router = useRouter();
-  const route = useRoute()
+  const route = useRoute();
 
   //Redirects
   const redirectHome = (): void => {
@@ -18,15 +18,21 @@ const useRedirect = () => {
       name: 'login',
     });
   };
+
+  const redirectListLogs = (datetime: string) => {
+    datetime = String(encodeURIComponent(datetime));
+    router.push({ name: 'log-list', params: { datetime } });
+  };
   //End Redirects
 
   return {
     //Methods
     redirectHome,
     redirectLogin,
+    redirectListLogs,
 
     //Variables
-    routeName: computed<string>(() => route.name as string)
+    routeName: computed<string>(() => route.name as string),
   };
 };
 

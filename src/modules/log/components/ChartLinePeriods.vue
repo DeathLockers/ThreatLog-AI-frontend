@@ -60,10 +60,15 @@ const chartOptions = computed<ChartLinePeriodOptions>(() => {
 </script>
 
 <template>
-  <div class="text-h5 div-chart-title">{{ $t('Real-time anomaly detection') }}</div>
-  <div class="q-mb-xl div-chart">
-    <apexchart type="line" height="350" :options="chartOptions" :series="series"></apexchart>
-  </div>
+  <div class="text-h5 div-chart-title q-mb-md">{{ $t('Real-time anomaly detection') }}</div>
+  <q-card class="q-mb-xl">
+    <q-card-section>
+      <div class="div-chart">
+        <apexchart type="line" height="350" :options="chartOptions" :series="series"></apexchart>
+      </div>
+    </q-card-section>
+  </q-card>
+
 </template>
 
 <style lang="sass" scoped>

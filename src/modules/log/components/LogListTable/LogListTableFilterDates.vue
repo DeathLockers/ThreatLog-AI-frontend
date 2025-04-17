@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { inject, onMounted, ref, toRefs, watch } from 'vue';
+import { ListLogsParameterizedType } from '../../types/logType';
+import { ListLogsParameterized } from '../../interfaces/logInterface';
 
 interface Props {
   fromDateDefault: string,
@@ -17,17 +19,27 @@ defineEmits<{
 
 const { fromDateDefault, toDateDefault } = defineProps<Props>();
 
+const { rangeDate } = toRefs(inject(ListLogsParameterizedType) as ListLogsParameterized);
+
 const tableRangeDates = ref<TableRangeDates>({ from: '', to: '' })
 
 onMounted(() => {
   tableRangeDates.value.to = fromDateDefault
   tableRangeDates.value.from = toDateDefault
 })
+
+watch(
+  () => rangeDate.value,
+  async (val) => {
+    tableRangeDates.value.to = val[0]
+    tableRangeDates.value.from = val[1]
+  },
+);
 </script>
 
 <template>
   <q-btn icon-right="mdi-calendar-month" outline square unelevated padding="sm" color="indigo" class="q-mr-md"
-    :label="`${fromDateDefault} - ${toDateDefault}`">
+    :label="`${toDateDefault} - ${fromDateDefault}`">
     <q-popup-proxy cover transition-show="scale" transition-hide="scale">
       <q-date v-model="tableRangeDates" color="indigo" range mask="YYYY-MM-DD">
         <div class="row items-center justify-end q-gutter-sm">
