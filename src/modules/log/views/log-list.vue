@@ -36,13 +36,26 @@ const isLoading = ref<boolean>(true)
 provide(ListLogsParameterizedType, formData);
 
 onActivated(async () => {
-  await logStore.showLogs(formData)
-  isLoading.value = false
+  if (!datetime) {
+    await logStore.showLogs(formData)
+    isLoading.value = false
+  } else {
+    onFormatDatetime()
+  }
 })
 
 const onUpdateVerifiedLog = async (val: VerifiedLog): Promise<void> => {
   await logVerifiedStore.verifiedLog(val)
   logStore.setUpdateVerifiedListLog(val)
+}
+
+const onFormatDatetime = (): void => {
+  if (datetime) {
+    formData.page = 1
+    formData.rangeDate = [datetime.split(' ')[0] ?? '', datetime.split(' ')[0] ?? '']
+    formData.target = true
+    formData.filter = datetime.split(' ')[1] ?? ''
+  }
 }
 
 watch(
@@ -60,12 +73,7 @@ watch(
 watch(
   () => datetime,
   async (val) => {
-    if (val) {
-      formData.page = 1
-      formData.rangeDate = [val.split(' ')[0] ?? '', val.split(' ')[0] ?? '']
-      formData.target = true
-      formData.filter = val.split(' ')[1] ?? ''
-    }
+    if (val) onFormatDatetime()
   },
 );
 </script>
