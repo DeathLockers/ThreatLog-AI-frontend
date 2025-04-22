@@ -37,6 +37,7 @@ See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-vite/quasar-
 <h3>Configure values in the .env file</h3>
 
 <pre><code><strong>APP_AXIOS_BASEURL=""</strong>
+<strong>APP_WS_BASEURL=""</strong>
 </code></pre>
 
 <hr>
