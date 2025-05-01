@@ -25,6 +25,7 @@
     "dotenv": "^16.4.7",
     "pinia": "^3.0.1",
     "quasar": "^2.16.0",
+    "register-service-worker": "^1.7.2",
     "vue": "^3.4.18",
     "vue-i18n": "^11.0.0",
     "vue-router": "^4.0.12",
@@ -35,7 +36,14 @@
     "@quasar/app-vite": "^2.1.0",
     "@types/node": "^20.5.9",
     "autoprefixer": "^10.4.2",
-    "typescript": "~5.5.3"
+    "typescript": "~5.5.3",
+    "workbox-build": "^7.0.0",
+    "workbox-cacheable-response": "^7.0.0",
+    "workbox-core": "^7.0.0",
+    "workbox-expiration": "^7.0.0",
+    "workbox-precaching": "^7.0.0",
+    "workbox-routing": "^7.0.0",
+    "workbox-strategies": "^7.0.0"
   },
   "engines": {
     "node": "^28 || ^26 || ^24 || ^22 || ^20 || ^18",
