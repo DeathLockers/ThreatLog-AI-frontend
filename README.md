@@ -61,7 +61,7 @@ $ docker-compose up -d</code>
 <h4>Running mode build:</h4>
 <pre>
 <code>$ docker compose up -d</code>
-<code>$ docker compose exec frontend quasar build</code>
+<code>$ docker compose exec frontend quasar build -m pwa</code>
 </pre>
 
 <h4>Running mode prod:</h4>

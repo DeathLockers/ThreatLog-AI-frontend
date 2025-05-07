@@ -9,4 +9,4 @@ services:
     image: javi98/threatlog-ai-frontend-prod:1.0.0
     container_name: threatlog-ai-frontend-prod
     ports:
-      - '85:80'
+      - '80:80'
