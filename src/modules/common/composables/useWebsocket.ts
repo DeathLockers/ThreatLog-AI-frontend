@@ -2,13 +2,14 @@ import { onBeforeUnmount, onMounted } from 'vue';
 import { LocalStorage } from 'quasar';
 import type { NotificationBackend } from 'src/modules/notification/interfaces/notificationInterface';
 import { useNotificationStore } from 'src/modules/notification/stores/notificationStore';
+import { getEnvWsBaseUrl } from '../helpers/getEnv';
 
 const useWebsocket = () => {
   let websocket: WebSocket | null = null;
   const notificationStore = useNotificationStore();
 
   const connectWebSocket = () => {
-    const wsUrl = `${process.env.APP_WS_BASEURL}/ws/${LocalStorage.getItem('token')}`;
+    const wsUrl = `${getEnvWsBaseUrl()}/ws/${LocalStorage.getItem('token')}`;
     websocket = new WebSocket(wsUrl);
 
     websocket.onopen = () => {

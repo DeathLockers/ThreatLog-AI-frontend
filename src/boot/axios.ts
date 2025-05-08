@@ -1,6 +1,7 @@
 import { defineBoot } from '#q-app/wrappers';
 import axios, { type AxiosInstance, AxiosRequestHeaders } from 'axios';
 import { LocalStorage, Loading } from 'quasar';
+import { getEnvAxiosBaseUrl } from '../modules/common/helpers/getEnv';
 
 declare module 'vue' {
   interface ComponentCustomProperties {
@@ -15,21 +16,23 @@ declare module 'vue' {
 // good idea to move this instance creation inside of the
 // "export default () => {}" function below (which runs individually
 // for each client)
-const api = axios.create({ baseURL: `${process.env.APP_AXIOS_BASEURL}/` });
+let api: AxiosInstance | null = null;
 
-api.interceptors.request.use((config) => {
-  config.headers = {
-    Authorization: LocalStorage.getItem('token'),
-    Accept: 'application/json',
-  } as AxiosRequestHeaders;
-
-  config.headers['Accept-Language'] = LocalStorage.getItem('language');
-
-  return config;
-});
-
-export default defineBoot(({ app }) => {
+export default defineBoot(async ({ app }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api
+  const axiosBaseUrl = await getEnvAxiosBaseUrl();
+  api = axios.create({ baseURL: `${axiosBaseUrl}/` });
+
+  api.interceptors.request.use((config) => {
+    config.headers = {
+      Authorization: LocalStorage.getItem('token'),
+      Accept: 'application/json',
+    } as AxiosRequestHeaders;
+
+    config.headers['Accept-Language'] = LocalStorage.getItem('language');
+
+    return config;
+  });
 
   app.config.globalProperties.$axios = axios;
   // ^ ^ ^ this will allow you to use this.$axios (for Vue Options API form)
