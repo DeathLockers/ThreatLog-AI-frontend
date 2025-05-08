@@ -8,5 +8,6 @@ services:
       target: 'prod-pwa-stage'
     image: javi98/threatlog-ai-frontend-prod:1.0.0
     container_name: threatlog-ai-frontend-prod
+    env_file: .env.prod
     ports:
       - '80:80'
