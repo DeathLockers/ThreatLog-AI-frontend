@@ -17,7 +17,7 @@ RUN quasar build -m pwa
 
 FROM nginx:alpine3.21 AS prod-spa-stage
 COPY --from=build-spa-stage /src/dist/spa /usr/share/nginx/html
-COPY .env.prod /app/.env.prod
+#COPY .env.prod /app/.env.prod
 COPY docker-config/generate-config-prod.sh /docker-entrypoint.d/generate-config.sh
 RUN chmod +x /docker-entrypoint.d/generate-config.sh
 RUN rm /etc/nginx/conf.d/default.conf
@@ -27,7 +27,7 @@ CMD ["nginx", "-g", "daemon off;"]
 
 FROM nginx:alpine3.21 AS prod-pwa-stage
 COPY --from=build-pwa-stage /src/dist/pwa /usr/share/nginx/html
-COPY .env.prod /app/.env.prod
+# COPY .env.prod /app/.env.prod
 COPY docker-config/generate-config-prod.sh /docker-entrypoint.d/generate-config.sh
 RUN chmod +x /docker-entrypoint.d/generate-config.sh
 RUN rm /etc/nginx/conf.d/default.conf
